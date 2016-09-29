@@ -1,0 +1,214 @@
+#include <stdio.h>
+#include <stdlib.h>
+int m=0;
+struct satheesh
+{
+    int data;
+    int pri;
+};
+struct satheesh s[100];
+
+void insert(struct satheesh h[],int y,int x)
+{ int l,p,temp,i;
+if(y<0 || x<1||y>1073741824||x>1073741824)
+{
+printf("invalid input");
+return;}
+    if(m==0)
+    {
+        h[1].data=y;
+        h[1].pri=x;
+        l=1;
+        m++;
+    }
+    else{
+        m++;
+        h[m].data=y;
+        h[m].pri=x;
+        l=m;
+
+        p=l;
+        while(p/2!=0 &&h[p].pri <h[p/2].pri)
+        {
+            temp=h[p/2].pri;
+            h[p/2].pri=x;
+            h[p].pri=temp;
+            temp=h[p/2].data;
+            h[p/2].data=y;
+            h[p].data=temp;
+            p=p/2;
+        }
+       }
+
+}
+void minimum(struct satheesh s[])
+{   if(m==0)
+{
+    printf("empty\n");
+    return;
+}
+    printf("%d",s[1].data);
+    printf("(%d)\n",s[1].pri);
+    return;
+}
+void extract(struct satheesh s[])
+{  int i;
+    if(m==0)
+{
+    printf("empty\n");
+    return;
+}
+   struct satheesh temp;
+   temp=s[1];
+    s[1]=s[m];
+    m=m-1;
+    minheap(s,1);
+    printf("%d",temp.data);
+    printf("(%d)\n",temp.pri);
+    return;
+}
+void decrease(struct satheesh h[],int a ,int b)
+{if(a<0 || b<1||a>1073741824||b>1073741824)
+{
+printf("invalid input\n");
+return;}
+    int i,j=0,l,p,temp;
+    if(m==0)
+    {
+        printf("NO DATA \n");
+        return;
+    }
+    for(i=1;i<m+1;i++)
+    {  
+	
+        if(h[i].data==a)
+        {   if(b>h[i].pri)
+        {printf("GIVEN PRIORITY SHOUL BE LESS THAN PRESENT PRIORITY\n");
+            return;
+        }
+            h[i].pri=b;
+            goto c;
+        }
+j++;
+    }
+    c:p=i;
+	if(j==m)
+{printf("no data found\n");
+return;}
+        while(p/2!=0 && h[p].pri <h[p/2].pri)
+        {
+            temp=h[p/2].pri;
+            h[p/2].pri=h[p].pri;
+            h[p].pri=temp;
+            temp=h[p/2].data;
+            h[p/2].data=h[p].data;
+            h[p].data=temp;
+            p=p/2;
+        }
+
+}
+
+
+int minheap(struct satheesh a[],int i)
+{
+    int c,j,k;struct satheesh l;
+    c=i;
+    if(left(c)<=m)
+    {
+        if(a[left(c)].pri < a[i].pri)
+            i=left(c);
+    }
+        if(right(c)<= m)
+        {
+            if(a[right(c)].pri < a[i].pri)
+            {
+                i=right(c);
+            }
+
+
+        }
+        if(i!=c)
+        { l=a[c];
+        a[c]=a[i];
+        a[i]=l;
+        minheap(a,i);
+
+        }
+
+}
+int left(int a)
+{
+    return 2*a;
+}
+int right(int a)
+{
+    return (2*a)+1;
+}
+
+int main()
+{
+char c,n;int i,j,k,l;
+
+y:scanf("%c",&c);
+switch(c)
+{
+case 'a':
+    {
+    if(scanf("%d",&i)!=1 )
+    {
+        printf("invalid input\n");
+scanf("%c",&n);
+        if(scanf("%d",&j)!=1)
+{scanf("%c",&n);
+goto h;}
+    }
+else if(scanf("%d",&j)!=1)
+{printf("invalid input");scanf("%c",&n);
+goto h;}
+   
+    insert(s,i,j);
+h:scanf("%c",&n);
+    goto y;
+
+}
+case 'g':
+    {
+        minimum(s);
+scanf("%c",&n);
+        goto y;
+    }
+case 'd':
+ {
+    if(scanf("%d",&i)!=1 )
+    {
+        printf("invalid input\n");
+scanf("%c",&n);
+        if(scanf("%d",&j)!=1)
+{scanf("%c",&n);
+goto v;}
+    }
+else if(scanf("%d",&j)!=1)
+{printf("invalid input");scanf("%c",&n);
+goto v;}
+       decrease(s,i,j);
+v:scanf("%c",&n);
+        goto y;
+    }
+case 'e':
+    {
+        extract(s);
+scanf("%c",&n);
+        goto y;
+    }
+case 's':
+    return 0;
+default:
+{
+printf("enter correct option!!!\n");
+scanf("%c",&n);
+goto y;
+    }
+}
+
+}
+
